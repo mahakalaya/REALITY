@@ -519,6 +519,8 @@ const (
 // modified. A Config may be reused; the tls package will also not
 // modify it.
 type Config struct {
+	DialContext func(ctx context.Context, network, address string) (net.Conn, error)
+
 	Show bool
 	Type string
 	Dest string
@@ -808,6 +810,17 @@ func (c *Config) Clone() *Config {
 	c.mutex.RLock()
 	defer c.mutex.RUnlock()
 	return &Config{
+		DialContext:                 c.DialContext,
+		Show:                        c.Show,
+		Type:                        c.Type,
+		Dest:                        c.Dest,
+		Xver:                        c.Xver,
+		ServerNames:                 c.ServerNames,
+		PrivateKey:                  c.PrivateKey,
+		MinClientVer:                c.MinClientVer,
+		MaxClientVer:                c.MaxClientVer,
+		MaxTimeDiff:                 c.MaxTimeDiff,
+		ShortIds:                    c.ShortIds,
 		Rand:                        c.Rand,
 		Time:                        c.Time,
 		Certificates:                c.Certificates,
