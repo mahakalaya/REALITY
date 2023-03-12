@@ -101,7 +101,7 @@ func (hs *serverHandshakeStateTLS13) handshake() error {
 		}
 	*/
 	{
-		signedCert := bytes.Clone(signedCert)
+		signedCert := append([]byte{}, signedCert...)
 
 		h := hmac.New(sha512.New, c.AuthKey)
 		h.Write(ed25519Priv[32:])
@@ -134,6 +134,8 @@ func (hs *serverHandshakeStateTLS13) handshake() error {
 	if _, err := c.flush(); err != nil {
 		return err
 	}
+	return nil
+
 	if err := hs.readClientCertificate(); err != nil {
 		return err
 	}
